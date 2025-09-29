@@ -1,6 +1,3 @@
-linking words 
-compund sentence 
-must be might be 
 
 true = if the statement is correct 
 false = if the sentence contradicts the statement 
