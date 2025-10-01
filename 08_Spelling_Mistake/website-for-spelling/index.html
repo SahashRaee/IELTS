@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Spelling Correction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
+            --text-primary: #e8e8ff;
+            --text-secondary: #a8a8cc;
+            --accent: #00d9ff;
+            --accent-glow: rgba(0, 217, 255, 0.3);
+            --success: #00ff88;
+            --error: #ff3366;
+            --shadow: rgba(0, 0, 0, 0.5);
+        }
+
+        .light-mode {
+            --bg-primary: #f0f4ff;
+            --bg-secondary: #ffffff;
+            --bg-card: #fafbff;
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a4a6a;
+            --accent: #0099ff;
+            --accent-glow: rgba(0, 153, 255, 0.2);
+            --success: #00cc66;
+            --error: #ff3366;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(45deg, var(--accent), #6b5fff);
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(135deg, #ff6b9d, var(--accent));
+            bottom: -100px;
+            right: -100px;
+            animation-delay: -7s;
+        }
+
+        .orb3 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(225deg, #6b5fff, #00ff88);
+            top: 50%;
+            left: 50%;
+            animation-delay: -14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-100px, 100px) scale(0.9); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--accent), #6b5fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            color: var(--text-primary);
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        .main-content {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .word-list {
+            position: fixed;
+            left: -400px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 0 20px 20px 0;
+            box-shadow: 0 10px 30px var(--shadow);
+            max-height: 80vh;
+            overflow-y: auto;
+            width: 350px;
+            transition: left 0.4s ease;
+            z-index: 100;
+        }
+
+        .word-list.open {
+            left: 0;
+        }
+
+        .word-list h2 {
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .word-item {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .word-item:hover {
+            transform: translateX(5px);
+            border-color: var(--accent);
+            box-shadow: 0 5px 15px var(--accent-glow);
+        }
+
+        .word-item.active {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, var(--bg-card), rgba(0, 217, 255, 0.1));
+        }
+
+        .practice-area {
+            background: var(--bg-secondary);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow);
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .words-toggle-btn {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, var(--accent), #6b5fff);
+            border: none;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0 15px 15px 0;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px var(--accent-glow);
+            z-index: 101;
+            writing-mode: vertical-rl;
+        }
+
+        .words-toggle-btn:hover {
+            padding-left: 1.5rem;
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .audio-btn {
+            background: linear-gradient(135deg, var(--accent), #6b5fff);
+            border: none;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 2rem;
+            margin: 2rem 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px var(--accent-glow);
+            width: 80px;
+            height: 80px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .audio-btn:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 15px 40px var(--accent-glow);
+        }
+
+        .audio-btn:active {
+            transform: scale(0.95);
+        }
+
+        .current-word-display {
+            font-size: 1.5rem;
+            margin: 2rem 0;
+            color: var(--text-secondary);
+            min-height: 40px;
+        }
+
+        .input-area {
+            margin: 2rem 0;
+        }
+
+        .spell-input {
+            width: 100%;
+            padding: 1.5rem;
+            font-size: 1.5rem;
+            border: 3px solid var(--accent);
+            border-radius: 15px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px var(--accent-glow);
+        }
+
+        .spell-input:focus {
+            outline: none;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .feedback {
+            margin-top: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: bold;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .feedback.correct {
+            color: var(--success);
+            animation: celebrate 0.6s ease;
+        }
+
+        .feedback.incorrect {
+            color: var(--error);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes celebrate {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-radius: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .add-word-section {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--shadow);
+            margin-top: 2rem;
+        }
+
+        .add-word-form {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .add-word-input {
+            flex: 1;
+            padding: 1rem;
+            font-size: 1rem;
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .add-word-btn {
+            background: linear-gradient(135deg, var(--accent), #6b5fff);
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px var(--accent-glow);
+        }
+
+        .add-word-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            border: 2px solid var(--accent);
+            color: var(--text-primary);
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-card);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+    </div>
+
+    <button class="words-toggle-btn" onclick="toggleWordList()">📚 WORDS</button>
+
+    <div class="container">
+        <header>
+            <h1>✨ IELTS Spelling Master</h1>
+            <div class="controls">
+                <button class="theme-toggle" onclick="toggleTheme()">🌓 Toggle Theme</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="word-list" id="wordListPanel">
+                <h2>📚 Common Misspelled Words</h2>
+                <div id="wordListContainer"></div>
+            </div>
+
+            <div class="practice-area">
+                <h2>🎯 Practice Session</h2>
+                <button class="audio-btn" onclick="pronounceWord()" title="Click to hear the word">🔊</button>
+                <div class="current-word-display" id="wordDisplay">Click the speaker to start!</div>
+                
+                <div class="input-area">
+                    <input 
+                        type="text" 
+                        class="spell-input" 
+                        id="spellingInput" 
+                        placeholder="Type what you hear..."
+                        onkeyup="checkSpelling(event)"
+                    >
+                    <button class="btn-secondary" onclick="checkSpellingManual()" style="margin-top: 1rem; width: 100%;">Check Answer ✓</button>
+                </div>
+
+                <div class="feedback" id="feedback"></div>
+
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="correctCount">0</div>
+                        <div class="stat-label">Correct</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="attemptCount">0</div>
+                        <div class="stat-label">Attempts</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="accuracy">0%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: var(--accent); margin-bottom: 1rem;">📈 Progress Tracking</h3>
+                    <div style="background: var(--bg-card); padding: 1rem; border-radius: 15px;">
+                        <canvas id="progressGraph" width="600" height="200" style="width: 100%; height: auto;"></canvas>
+                    </div>
+                </div>
+
+                <button class="btn-secondary" onclick="nextWord()">Next Word →</button>
+            </div>
+        </div>
+
+        <div class="add-word-section">
+            <h2>➕ Add New Word</h2>
+            <div class="add-word-form">
+                <input 
+                    type="text" 
+                    class="add-word-input" 
+                    id="newWordInput" 
+                    placeholder="Enter a new word to practice..."
+                >
+                <button class="add-word-btn" onclick="addNewWord()">Add Word</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Top commonly used words in IELTS Listening 
+        let wordList = [
+            // Common misspellings
+            'accommodate', 'achievement', 'acquaintance', 'argument', 'beautiful',
+            'beginning', 'believe', 'business', 'calendar', 'category',
+            'cemetery', 'colleague', 'committee', 'consciousness', 'definitely',
+            'discipline', 'embarrass', 'environment', 'exaggerate', 'excellent',
+            'existence', 'experience', 'foreign', 'government', 'guarantee',
+            'independent', 'intelligence', 'knowledge', 'maintenance', 'millennium',
+            'necessary', 'occasion', 'occurred', 'parallel', 'perseverance',
+            'possession', 'privilege', 'recommend', 'restaurant', 'separate',
+            'successful', 'sufficient', 'surprise', 'tomorrow', 'unnecessary',
+            
+            // IELTS Listening specific vocabulary
+            'accommodation', 'address', 'admission', 'afternoon', 'ambulance',
+            'announcement', 'apartment', 'application', 'appointment', 'assignment',
+            'assistance', 'atmosphere', 'attendance', 'available', 'avenue',
+            'bachelor', 'background', 'balance', 'bibliography', 'boundary',
+            'brochure', 'budget', 'cafeteria', 'campaign', 'certificate',
+            'circumstances', 'colleague', 'commercial', 'communication', 'community',
+            'comparison', 'competition', 'conference', 'confidential', 'consequence',
+            'conservation', 'consistently', 'construction', 'consultation', 'contemporary',
+            'convenience', 'coordinator', 'correspondence', 'curriculum', 'defendant',
+            'demonstration', 'department', 'description', 'development', 'directory',
+            'discussion', 'documentary', 'donation', 'economy', 'education',
+            'efficiency', 'emergency', 'employment', 'encyclopedia', 'engineering',
+            'enrollment', 'entertainment', 'equipment', 'essential', 'establishment',
+            'evaluation', 'evidence', 'examination', 'exhibition', 'explanation',
+            'extension', 'extraordinary', 'facilities', 'fahrenheit', 'familiar',
+            'fascinate', 'favourite', 'February', 'financial', 'fluorescent',
+            'fortunately', 'foundation', 'frequently', 'fundamental', 'furniture',
+            'gallery', 'general', 'generation', 'genuine', 'geography',
+            'government', 'graduation', 'guarantee', 'gymnasium', 'headquarters',
+            'heritage', 'hierarchy', 'historical', 'hospitality', 'hypothesis',
+            'identification', 'illustration', 'immediately', 'immigration', 'implementation',
+            'inappropriate', 'incredible', 'industrial', 'information', 'infrastructure',
+            'initial', 'innovation', 'inquiry', 'institution', 'insurance',
+            'intellectual', 'intermediate', 'international', 'interpretation', 'investigation',
+            'laboratory', 'landscape', 'legislation', 'leisure', 'library',
+            'literature', 'location', 'machinery', 'magazine', 'magnificent',
+            'management', 'mandatory', 'manufacture', 'marketing', 'measurement',
+            'mechanical', 'medical', 'membership', 'methodology', 'metropolitan',
+            'minimum', 'minister', 'miscellaneous', 'moderate', 'modern',
+            'motivation', 'municipal', 'museum', 'navigation', 'necessary',
+            'negotiation', 'neighborhood', 'nevertheless', 'notification', 'numerical',
+            'obligation', 'observation', 'occupation', 'official', 'operation',
+            'opportunity', 'organization', 'orientation', 'original', 'outstanding',
+            'parliament', 'participant', 'particular', 'passenger', 'payment',
+            'percentage', 'performance', 'permanent', 'permission', 'personal',
+            'personnel', 'philosophy', 'photography', 'physical', 'pollution',
+            'population', 'portfolio', 'position', 'practical', 'preference',
+            'preliminary', 'premises', 'premium', 'preparation', 'prescription',
+            'presentation', 'preservation', 'priority', 'procedure', 'professional',
+            'professor', 'program', 'promotion', 'pronunciation', 'property',
+            'proportion', 'proposal', 'psychological', 'publication', 'quality',
+            'quantity', 'questionnaire', 'receipt', 'recommendation', 'recreation',
+            'reference', 'refrigerator', 'registration', 'regulation', 'rehabilitation',
+            'relevant', 'reliable', 'representative', 'requirement', 'research',
+            'reservation', 'residence', 'resources', 'responsibility', 'restaurant',
+            'retirement', 'safety', 'schedule', 'scholarship', 'scientific',
+            'secretary', 'security', 'selection', 'semester', 'seminar',
+            'significant', 'similar', 'situation', 'society', 'sophisticated',
+            'specialist', 'specific', 'sponsorship', 'statistics', 'structural',
+            'subscription', 'substantial', 'suburban', 'summary', 'supervisor',
+            'supplement', 'supplies', 'survey', 'sustainable', 'systematic',
+            'technique', 'technology', 'telephone', 'temperature', 'temporary',
+            'territory', 'testimony', 'theatre', 'theoretical', 'throughout',
+            'tournament', 'traditional', 'transaction', 'transfer', 'transportation',
+            'treasurer', 'treatment', 'tutorial', 'typical', 'ultimate',
+            'undergraduate', 'universal', 'university', 'unnecessary', 'unusual',
+            'urban', 'utilization', 'vacation', 'variety', 'vehicle',
+            'vicinity', 'volunteer', 'warehouse', 'warranty', 'Wednesday',
+            'welfare', 'whether', 'wildlife', 'withdraw', 'worthwhile'
+        ];
+
+        let currentWord = '';
+        let correctCount = 0;
+        let attemptCount = 0;
+        let currentIndex = 0;
+        let usedIndices = [];
+        let sessionHistory = [];
+
+        function renderWordList() {
+            const container = document.getElementById('wordListContainer');
+            container.innerHTML = '';
+            wordList.forEach((word, index) => {
+                const div = document.createElement('div');
+                div.className = 'word-item';
+                if (index === currentIndex) div.classList.add('active');
+                div.textContent = word;
+                div.onclick = () => selectWord(index);
+                container.appendChild(div);
+            });
+        }
+
+        function selectWord(index) {
+            currentIndex = index;
+            currentWord = wordList[index];
+            document.getElementById('spellingInput').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('wordDisplay').textContent = 'Click the speaker to hear!';
+            renderWordList();
+        }
+
+        function getRandomWord() {
+            if (usedIndices.length === wordList.length) {
+                usedIndices = [];
+            }
+            
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * wordList.length);
+            } while (usedIndices.includes(randomIndex));
+            
+            usedIndices.push(randomIndex);
+            return randomIndex;
+        }
+
+        function pronounceWord() {
+            if (!currentWord && wordList.length > 0) {
+                currentWord = wordList[currentIndex];
+            }
+            
+            if ('speechSynthesis' in window) {
+                speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(currentWord);
+                utterance.rate = 0.8;
+                utterance.pitch = 1;
+                utterance.volume = 1;
+                
+                // Force American English accent
+                const voices = speechSynthesis.getVoices();
+                const americanVoice = voices.find(voice => 
+                    voice.lang === 'en-US' || 
+                    voice.name.includes('US') || 
+                    voice.name.includes('American')
+                ) || voices.find(voice => voice.lang.startsWith('en'));
+                
+                if (americanVoice) {
+                    utterance.voice = americanVoice;
+                }
+                
+                speechSynthesis.speak(utterance);
+                document.getElementById('wordDisplay').textContent = '🎧 Listening...';
+            } else {
+                alert('Sorry, your browser does not support text-to-speech!');
+            }
+        }
+
+        function checkSpelling(event) {
+            if (event.key === 'Enter') {
+                checkSpellingManual();
+            }
+        }
+
+        function checkSpellingManual() {
+            const input = document.getElementById('spellingInput');
+            const feedback = document.getElementById('feedback');
+            
+            if (!input.value.trim()) {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = '⚠️ Please type something first!';
+                return;
+            }
+
+            const userSpelling = input.value.trim().toLowerCase();
+            attemptCount++;
+            
+            const isCorrect = userSpelling === currentWord.toLowerCase();
+            
+            if (isCorrect) {
+                correctCount++;
+                feedback.className = 'feedback correct';
+                feedback.textContent = '✨ Brilliant! Spot on!';
+                
+                sessionHistory.push({
+                    attempt: attemptCount,
+                    correct: true,
+                    accuracy: Math.round((correctCount / attemptCount) * 100)
+                });
+                
+                setTimeout(() => {
+                    nextWord();
+                }, 1500);
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = `❌ Oops! The correct spelling is: ${currentWord}`;
+                
+                sessionHistory.push({
+                    attempt: attemptCount,
+                    correct: false,
+                    accuracy: Math.round((correctCount / attemptCount) * 100)
+                });
+            }
+            
+            updateStats();
+            updateGraph();
+        }
+
+        function nextWord() {
+            currentIndex = getRandomWord();
+            currentWord = wordList[currentIndex];
+            document.getElementById('spellingInput').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('wordDisplay').textContent = 'Click the speaker to hear!';
+            renderWordList();
+        }
+
+        function updateStats() {
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('attemptCount').textContent = attemptCount;
+            const accuracy = attemptCount > 0 ? Math.round((correctCount / attemptCount) * 100) : 0;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+        }
+
+        function updateGraph() {
+            const canvas = document.getElementById('progressGraph');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            if (sessionHistory.length === 0) return;
+            
+            // Draw grid
+            ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--text-secondary');
+            ctx.lineWidth = 0.5;
+            ctx.globalAlpha = 0.2;
+            
+            for (let i = 0; i <= 4; i++) {
+                const y = (height / 4) * i;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+            
+            // Draw accuracy line
+            ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--accent');
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const maxPoints = 20;
+            const visibleHistory = sessionHistory.slice(-maxPoints);
+            const step = width / (maxPoints - 1);
+            
+            visibleHistory.forEach((point, index) => {
+                const x = (index / (visibleHistory.length - 1)) * width;
+                const y = height - (point.accuracy / 100) * height;
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            
+            ctx.stroke();
+            
+            // Draw points
+            ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--accent');
+            visibleHistory.forEach((point, index) => {
+                const x = (index / (visibleHistory.length - 1)) * width;
+                const y = height - (point.accuracy / 100) * height;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            // Draw current accuracy text
+            if (visibleHistory.length > 0) {
+                const lastPoint = visibleHistory[visibleHistory.length - 1];
+                const x = ((visibleHistory.length - 1) / (visibleHistory.length - 1)) * width;
+                const y = height - (lastPoint.accuracy / 100) * height;
+                
+                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-primary');
+                ctx.font = 'bold 14px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(lastPoint.accuracy + '%', x, y - 15);
+            }
+        }
+
+        function addNewWord() {
+            const input = document.getElementById('newWordInput');
+            const newWord = input.value.trim().toLowerCase();
+            
+            if (newWord && !wordList.includes(newWord)) {
+                wordList.push(newWord);
+                input.value = '';
+                renderWordList();
+                alert('✅ Word added successfully!');
+            } else if (wordList.includes(newWord)) {
+                alert('⚠️ This word is already in the list!');
+            } else {
+                alert('⚠️ Please enter a valid word!');
+            }
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+        }
+
+        function toggleWordList() {
+            const panel = document.getElementById('wordListPanel');
+            panel.classList.toggle('open');
+        }
+
+        // Load voices for speech synthesis
+        if ('speechSynthesis' in window) {
+            speechSynthesis.onvoiceschanged = () => {
+                speechSynthesis.getVoices();
+            };
+        }
+
+        // Initialize
+        renderWordList();
+        currentIndex = getRandomWord();
+        selectWord(currentIndex);
+        
+        // Redraw graph on theme change
+        const originalToggleTheme = toggleTheme;
+        toggleTheme = function() {
+            originalToggleTheme();
+            setTimeout(updateGraph, 100);
+        };
+    </script>
+</body>
+</html>
