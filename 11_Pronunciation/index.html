@@ -28,7 +28,7 @@ body.light .word-card { background: var(--card-light); color: var(--text-light);
 .buttons button:hover { background:#388e3c; }
 </style>
 </head>
-<body class="dark">
+<body>
 <h1> Pronunciation English Words</h1>
 <div id="controls">
     <button id="toggleTheme">Toggle Light/Dark Mode</button><br>
@@ -39,7 +39,7 @@ body.light .word-card { background: var(--card-light); color: var(--text-light);
 <div id="wordList"></div>
 
 <script>
-let words = [
+const defaultWords = [
 "Advertisement","Schedule","Route","Tomato","Leisure","Either","Neither","Garage","Mobile","Privacy",
 "Process","Data","Vase","Zebra","Vehicle","Receipt","Energy","Success","Comfort","Chocolate",
 "Clothes","Ballet","Adult","Often","Focus","Result","Famous","History","Problem","Favorite",
@@ -52,9 +52,28 @@ let words = [
 "Traditional","Modern","Global","Economic","Political","Cultural","Environment","Science","Education","Technology"
 ];
 
+// Load words from localStorage or default
+let words = JSON.parse(localStorage.getItem('words')) || defaultWords.slice();
+
+// Load theme from localStorage or default dark
+const savedTheme = localStorage.getItem('theme') || 'dark';
+document.body.classList.add(savedTheme);
+
+// Word list container
 const wordList = document.getElementById('wordList');
 
-function createWordCard(word, index) {
+// Save words to localStorage
+function saveWords() {
+    localStorage.setItem('words', JSON.stringify(words));
+}
+
+// Save theme to localStorage
+function saveTheme(theme) {
+    localStorage.setItem('theme', theme);
+}
+
+// Create word card
+function createWordCard(word,index){
     const card = document.createElement('div');
     card.className = 'word-card';
     card.innerHTML = `
@@ -67,28 +86,27 @@ function createWordCard(word, index) {
     wordList.appendChild(card);
 }
 
-function renderWords(list) {
+// Render word list
+function renderWords(list){
     wordList.innerHTML = '';
     list.forEach((word,index)=>createWordCard(word,index));
 }
 
-// Speak function forcing female voice
-function speak(word, lang) {
+// Speak function
+function speak(word, lang){
     const utter = new SpeechSynthesisUtterance(word);
     utter.lang = lang;
-    utter.rate = 0.85; // slower like Google TTS
+    utter.rate = 0.85;
     let voices = window.speechSynthesis.getVoices();
     let femaleVoice;
-    if(lang.includes('en-US')) {
-        femaleVoice = voices.find(v => v.lang.includes('en-US') && /zira|samantha/i.test(v.name));
+    if(lang.includes('en-US')){
+        femaleVoice = voices.find(v=>v.lang.includes('en-US') && /zira|samantha/i.test(v.name));
     } else {
-        femaleVoice = voices.find(v => v.lang.includes('en-GB') && /female|hazel|kate/i.test(v.name));
+        femaleVoice = voices.find(v=>v.lang.includes('en-GB') && /female|hazel|kate/i.test(v.name));
     }
     if(femaleVoice) utter.voice = femaleVoice;
     window.speechSynthesis.speak(utter);
 }
-
-
 
 // Initial render
 renderWords(words);
@@ -102,15 +120,23 @@ document.getElementById('searchBar').addEventListener('input',(e)=>{
 
 // Toggle Dark/Light
 document.getElementById('toggleTheme').addEventListener('click', ()=>{
-    document.body.classList.toggle('dark');
-    document.body.classList.toggle('light');
+    if(document.body.classList.contains('dark')){
+        document.body.classList.remove('dark');
+        document.body.classList.add('light');
+        saveTheme('light');
+    } else {
+        document.body.classList.remove('light');
+        document.body.classList.add('dark');
+        saveTheme('dark');
+    }
 });
 
-// Add new word dynamically
+// Add new word
 document.getElementById('addWordBtn').addEventListener('click', ()=>{
     const newWord = document.getElementById('newWordInput').value.trim();
-    if(newWord && !words.includes(newWord)) {
+    if(newWord && !words.includes(newWord)){
         words.push(newWord);
+        saveWords();
         renderWords(words);
         document.getElementById('newWordInput').value = '';
     }
