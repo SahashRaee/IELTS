@@ -1,0 +1,160 @@
+1. modal verbs
+2. Complex Sentence
+3. Conditional Sentence 
+4. Relative Cluases 
+5. Tense 
+6. 
+
+
+
+
+1. Conditional Sentence 
+
+Conditional clause ( condition), + main clause (result)
+
+- Zero Conditional ( General truths)
+  Strututre : If + simple present , simple present 
+  Example : If you boil ice, it melts.            - Both clauses always happen, not hypothetical 
+
+- First conditional ( Real possibilites - likey to happen in future)
+  Structure : If + simple present, will + v1 
+  Example : If I study hard, I will pass the exam.    - (can be replaced by can, might  - If you hurry up, you might catch the bus.)
+
+- Second conditional ( Present/Future Hypothetical)    {Mostly used in ielts}
+  Structure : If + past tense, would + v1 
+  Example : If I were you, I would apologize to him.             - Used for giving advice politely
+  Example : If he/she/it were you, he would apologize to them.             
+            If I had a million dollars, I would visit the world.       
+            If I had more leisure time, I would volunteer in my community 
+
+- Third conditional ( Past Hypothetical)   {Often used for regrets}
+  Structure : If + past perfect, would have + v3 
+  Example : If I had studied hard, I would have passed the exam. 
+
+
+  Best Version to use : 
+    
+    Conditional Sentence + Relative Clause  == Higher grammatical range 
+    Condtional clause, main clause, relative clause 
+
+    Example: If I had the chance to visit abroad, I would visit countries where I could learn about different cultures. 
+             If I were the manager, I would build flexible hours for work, which would be beneficial for company.
+                                                                            which would make employees more productive . 
+
+        [If students practice daily, which many don’t, they will improve quickly.] 
+
+
+    If they want to learn from me, I teach them - wrong(If + simple present, general truth(simple present)) * Zero Conditional 
+    If they want to learn from me, I will teach them - right (If + simple present, will + base verb ) * First Conditional 
+    If they wanted to learn from me, I would teach them - right (If + simple past, would + v1 ) * Second Condtional 
+
+
+2. Modal Verbs 
+
+| Modal | Meaning in this sentence              | Example                                                          |
+| ----- | ------------------------------------- | ---------------------------------------------------------------- |
+| may   | Possible outcome, polite/formal       | “This policy **may** reduce traffic.”                            |
+| might | Slightly less formal possibility      | “This policy **might** reduce traffic.”                          |
+| could | Potential / hypothetical / capability | “This policy **could** reduce traffic if implemented correctly.” |
+| must  | Strong certainty / deduction          | “This policy **must** reduce traffic if enforced properly.”      |
+
+
+- may/might/could are all fine for expressing possibility or prediction, just vary them to show range.
+
+    Use of can :
+
+This policy may reduce traffic, which could improve air quality in urban areas.
+This policy can reduce traffic if people follow it correctly.
+
+ - Using can often needs a condition to show it’s achievable, while may naturally expresses possibility.
+
+     Use of modal verbs for advice/suggestion
+
+ | Modal    | Function                                     | Example                                  |
+| -------- | -------------------------------------------- | ---------------------------------------------- |
+| should   | Advice / recommendation                      | “Students should revise daily.”            |
+| ought to | Formal advice / recommendation               | “We **ought to reduce plastic use.”          |
+| might    | Possible / speculation                       | “This policy might reduce traffic.”        |
+| may      | Possible / speculation                       | “Education may improve social mobility.”   |
+| could    | Suggestion / hypothetical / past possibility | “Governments could provide free training.” |
+| can      | Ability / possibility                        | “Technology can improve learning.”         |
+| must     | Strong obligation / logical deduction        | “People must follow traffic rules.”      |  
+
+
+
+3. Relative Clause 
+
+- Adds details or explanations 
+
+| Relative Pronoun | Example                                                                                           | Definition                                            |
+| ---------------- | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| who              | “The teacher **who teaches math** is very strict.”                                                | Use for people                                           |
+| which            | “The policy, **which was implemented last year**, improved traffic.”                              | Use for things / ideas                                   |
+| that             | “Students **that study regularly** perform better.”                                               | Can replace who/which in informal IELTS writing/speaking |
+| where / whose    | “The city **where I grew up** is beautiful.” / “People **whose jobs are affected** need support.” | Use for place/possession                                 |
+
+
+4. Preposition 
+
+Collocation - Adjective + Preposition 
+
+afraid of 
+good at 
+interested in 
+responsible for 
+proud of 
+died of 
+capable of 
+
+Collocation - Verb + Preposition 
+
+rely on 
+accused of 
+belong to 
+depend on 
+deal with 
+focus on 
+result in 
+lead to 
+suffer from 
+
+
+Collocation - Noun + Preposition
+
+under pressure 
+under control 
+by chance 
+by mistake 
+free from 
+
+5. Subject verb agreement 
+
+- People + v1 (people is plural)
+- Distances, Period of time, Amounts of Money always singular 
+      : Five years is long period of time 
+      : Ten rupees or dollars is enough 
+- Each, Everyone, Everybody, Somebody, Nobody, Every is always singular 
+      : Everyone has a chance to succeed. 
+      : Each dog is (Each of the dogs is)
+      : Somebody is knocking at the door. 
+      : Nobody knows the answer. 
+      : Every child loves chocolate.
+- Collective nouns  
+      * Singular if acting as one unit → use singular verb
+      * Plural if focus is on individuals → use plural verb
+      : The government is improving education system in our country. 
+      : The government are arguing among themselves. 
+      : The team is winning a match. 
+      : The team are wearing different clothes. 
+- There is / There are * verb after there always ought to match the real subject after it. 
+      : There are a lots of detrimental impacts of smoking 
+      : There have been many changes in the system 
+- Mixed Subjects (Plural + singular)
+      : The manager, along with his staffs, is coming. 
+- Uncountable nouns always singular 
+      : The news is shocking. 
+      : Pollution is a major problem 
+- Relative Cluases (who/which/that)
+      * Verb agrees with antecedent (noun before the relative pronoun)
+      : He is one of the students who always work hard. 
+      : He is the only student who works hard. 
