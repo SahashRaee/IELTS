@@ -1,13 +1,13 @@
 1. Verbs and Adverbs to describe 
     Increase, Rise 
 
-    Quickly, rapidly, sharply 
+    Quickly, rapidly, sharply , dramatically
 
     Considerably, Signigicantly, Substaintially 
 
-    Moderately, Gradually, 
+    Moderately, Gradually, Steadily
 
-    Decrease, plummet, fall 
+    Decrease, plummet, fall, decline
 
     Remain constant
 
@@ -24,7 +24,10 @@
 
 Writing an overview 
 
-- Look for three general trends 
+- Look for three general trends / main features
+- 
 
 
-
+1. Burglary declines dramatically 
+2. Car theft increases gradually
+3. Robbery reamains constant throughout the period 

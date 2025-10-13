@@ -15,6 +15,22 @@ Questions Types
 2. Short Answer Question
 3. Summary Completion 
 4. Multiple Choice 
-5. Form completion 
+5. Form completion / Table Completion
 6. Sentence Completion 
 7. Matching 
+
+
+Mistakes 
+1. Spelling 
+2. Vocabulary 
+3. Strategy 
+4. Listening Skills 
+5. Specific Type of Questions ( Map/ Diagram Labelling, MCQ )
+
+
+Improvement 
+1. Strategy for Each type of questions 
+2. Master them
+3. Pratice Tests (under real test conditions)
+3. Mistakes Analysis 
+4. Work on them 
