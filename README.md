@@ -40,18 +40,3 @@ A comprehensive study repository for IELTS (International English Language Testi
 - Practice test links
 - Additional study materials
 
-## 🎯 Target Band Score
-- [ ] Band 6.0
-- [ ] Band 6.5
-- [ ] Band 7.0
-- [ ] Band 7.5+
-
-## 📝 Study Progress
-- [ ] Complete all reading strategies
-- [ ] Practice 10 writing tasks
-- [ ] Record speaking practice sessions
-- [ ] Complete vocabulary lists
-- [ ] Take 3 full practice tests
-
----
-*Last updated: [Date]*
